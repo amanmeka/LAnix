@@ -29,6 +29,22 @@
 void PQueue::push(void *item, int priority)
 {
 	/* Your code here */
+
+	node * temp = new node();
+	temp->data = item;
+	temp->priority = priority;
+
+	node* curr = front;
+
+	while(curr->priority < priority) {
+		curr = curr->link;
+	}
+	
+	node *temp3 = curr->link->link;
+	curr->link = temp;
+
+	curr->link->link = temp3;
+
 }
 
 /*
