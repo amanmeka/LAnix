@@ -33,18 +33,21 @@ void PQueue::push(void *item, int priority)
 	node * temp = new node();
 	temp->data = item;
 	temp->priority = priority;
+	temp->link = NULL;
+
+	if (front == NULL || priority > front->priority) {
+		temp->link = front;
+		front = temp;
+		return;
+	}
 
 	node* curr = front;
-
-	while(curr->priority < priority) {
+	while (curr->link != NULL && priority <= curr->link->priority) {
 		curr = curr->link;
 	}
 	
-	node *temp3 = curr->link->link;
+	temp->link = curr->link;
 	curr->link = temp;
-
-	curr->link->link = temp3;
-
 }
 
 /*
@@ -52,14 +55,25 @@ void PQueue::push(void *item, int priority)
  */
 void* PQueue::top()
 {
-	/* Your code here */
+
+	if(front == NULL) {
+		return NULL;
+	}
+	
+	return front->data;
 }
+
 /*
  * Delete from Priority Queue
  */
 void PQueue::pop()
 {
-	/* Your code here */
+	if(front == NULL) {
+		return ;
+	}
+	node* discard = front;
+	front = front->link;
+	delete discard;
 }
 
 /*
@@ -67,11 +81,10 @@ void PQueue::pop()
  */
 void PQueue::display()
 {
-
 	/* Your code here */
-	
+	node* ptr = front;
+
 	/* Use the following out command for the data */
 	std::cout<<ptr->priority<<" "<<(char*)ptr->data<<std::endl;
-
 }
 	
